@@ -1,21 +1,9 @@
 #!/usr/bin/env bash
 
-#source onco-ci/scripts/common-utils.sh
+#source dev-op/scripts/common-utils.sh
 #load_modules -ttv2
 
-# http://ghe-rss.roche.com/pages/Oncology-ctDNA/Docs/development/release_management/#build-and-deploy-debian-packages-with-maven
+# The maven deb package plugin will not work if the SGID permission are set. So be sure to chmod -R g-s ${build_dir} the directory where you are doing your builds.
 chmod -R g-s .
 
-# Make special arrangements for the longitudinal-analysis repo
-PWD_BASENAME=`basename $(pwd)`
-if [[ "$PWD_BASENAME" == *"longitudinal-analysis"* ]]
-then {
-  module load go/go-1.11.4
-  make
-  mv bin aveniosam_binaries
-  backup_artifact `pwd`/aveniosam_binaries $BUILD_ARCHIVE_DIR/$BUILD_TAG
-}
-else {
-  mvn clean deploy -U -Dprod -Dmaven.test.skip
-}
-fi
+mvn clean deploy -U -Dprod -Dmaven.test.skip

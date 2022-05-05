@@ -11,11 +11,11 @@
 
 PIPELINE_TYPE=${1:-NA}
 
-#source onco-ci/scripts/common-utils.sh
+#source dev-op/scripts/common-utils.sh
 #load_modules $PIPELINE_TYPE
 #module load git-lfs
 
-# http://ghe-rss.roche.com/pages/Oncology-ctDNA/Docs/development/release_management/#build-and-deploy-debian-packages-with-maven
+# The maven deb package plugin will not work if the SGID permission are set. So be sure to chmod -R g-s ${build_dir} the directory where you are doing your builds.
 chmod -R g-s .
 
 package_name=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="artifactId"]/text()' pom.xml)
@@ -65,7 +65,6 @@ fi
 
 echo "--> Version tag $verified_tag matches version reported in pom.xml $pom_version"
 
-#http://ghe-rss.roche.com/pages/Oncology-ctDNA/Docs/development/release_management/#build-and-deploy-debian-packages-with-maven
 chmod -R g-s .
 
 # development releases are indicated via a dash after the version string:
@@ -96,5 +95,3 @@ echo "Pipeline Component Name (artifactId in 'pom.xml'): $PLC"
 echo "Pipeline Component Version (version in 'pom.xml'): $pom_version"
 
 
-# Backup build logs and job config
-backup_logs $JOB_NAME $BUILD_NUMBER $BUILD_ARCHIVE_DIR/$BUILD_TAG
