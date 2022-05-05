@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source onco-ci/scripts/common-utils.sh
-load_modules -ttv2
+#source onco-ci/scripts/common-utils.sh
+#load_modules -ttv2
 
 # http://ghe-rss.roche.com/pages/Oncology-ctDNA/Docs/development/release_management/#build-and-deploy-debian-packages-with-maven
 chmod -R g-s .
